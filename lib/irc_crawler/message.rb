@@ -12,6 +12,27 @@ class Message
     @ip = find_ip(@raw)
   end
   
+  # convert to a hash, suitable for creating a model obj for the db, for example
+  def to_h
+    {
+      nick: @nick,
+      text: @text,
+      ip: @ip,
+      timestamp: @timestamp,
+      raw: @raw
+    }
+  end
+  
+  def to_json
+    out = self.to_h
+    out.to_json
+  end
+  
+  # TODO: allow switches to control the field order and included fields
+  # standard field order = timestamp, nick, ip, text, raw_data
+  def to_csv
+    "\"#{ @timestamp }\", \"#{ @nick }\", \"#{ @ip }\", \"#{ @text }\", \"#{ @raw }\""
+  end
   
   private
   

@@ -56,7 +56,40 @@ module MessageSpec
     
     describe "output formats" do
       it "should output json" do
-        pending
+        m1 = Message.new raw: @raw_data, nick: @nick, text: @text
+        jout = m1.to_json
+        # for purpose of comparisons, parse it.
+        jhsh = JSON.parse jout
+        jhsh.should be_a_kind_of(Hash)
+        
+        # check the value
+        jhsh['ip'].should == @ip
+        jhsh['text'].should == @text
+        jhsh['nick'].should == @nick
+        jhsh['timestamp'].should_not be(nil)
+        jhsh['raw'].should == @raw_data
+      end
+      
+      it "should output a hash" do
+        m1 = Message.new raw: @raw_data, nick: @nick, text: @text
+        
+        hsh = m1.to_h
+        hsh.should be_a_kind_of(Hash)
+        
+        # and then check the values
+        hsh[:nick].should == @nick
+        hsh[:text].should == @text
+        hsh[:raw].should == @raw_data
+        hsh[:ip].should == @ip
+        hsh[:timestamp].should be_a_kind_of(Fixnum)
+      end
+      
+      it "should output quoted csv" do
+        # standard field order = timestamp, nick, ip, text, raw_data
+        m1 = Message.new raw: @raw_data, nick: @nick, text: @text
+        target = "\"#{ m1.timestamp }\", \"#{ @nick }\", \"#{ @ip }\", \"#{ @text }\", \"#{ @raw_data }\""
+        out = m1.to_csv
+        out.should == target
       end
     end
   end
