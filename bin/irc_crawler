@@ -17,7 +17,7 @@ option_parser = OptionParser.new do |opts|
     params[:duration] = duration.to_i
   end
   
-  opts.on('-l LIM', '--limit', 'Maximum number of posts to download. Optional') do |lim|
+  opts.on('-l LIM', '--limit', 'Maximum number of posts to download.') do |lim|
     params[:limit] = lim.to_i
   end
   
@@ -39,6 +39,10 @@ option_parser = OptionParser.new do |opts|
   
   opts.on('-f FMT', '--format', 'Output format. Valid values = csv|text-only|json|hash. Default: json') do |fmt|
     params[:format] = fmt
+  end
+  
+  opts.on('-o OUT', '--output', "File to write output to.") do |out|
+    params[:output] = out
   end
 end
 

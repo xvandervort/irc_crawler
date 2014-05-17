@@ -13,6 +13,7 @@ module IrcCrawlerSpec
       @_port = 6667
       @_channels = ['#bitcoin', '#security']
       @_format = 'text-only'  # not yet implemented!
+      @_outfile = 'output.json' # there is no default since the default output location is the screen
       
       @params = { duration: @_duration,
                   limit: @_limit,
@@ -20,7 +21,8 @@ module IrcCrawlerSpec
                   nick: @_nick,
                   port: @_port,
                   channels: @_channels,
-                  format: @_format}
+                  format: @_format,
+                  outfile: @_outfile}
       
       set_params @params
     end
@@ -64,6 +66,11 @@ module IrcCrawlerSpec
     it "should remember output format" do
       @format.should_not be(nil)
       @format.should == @_format
+    end
+    
+    it "should remember output file format" do
+      @outfile.should_not be(nil)
+      @outfile.should == @_outfile
     end
   end
 end

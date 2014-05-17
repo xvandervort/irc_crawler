@@ -7,9 +7,27 @@ class Message
   def initialize(prms = {})
     @raw = prms[:raw] || prms['raw'] || ''
     @nick = prms[:nick] || prms['nick'] || find_nick(@raw) || ""
-    @timestamp = Time.now.to_i
+    @timestamp = Time.now.to_f
     @text = prms[:text] || prms['text'] || find_text(@raw) || ''
     @ip = find_ip(@raw)
+  end
+  
+  def to_format(fmt)
+    case fmt
+    when 'hash'
+      self.to_h
+      
+    when 'json'
+      self.to_json
+      
+    when 'text-only'
+      @text
+      
+    when 'csv'
+      self.to_csv
+    else
+      self.to_s
+    end
   end
   
   # convert to a hash, suitable for creating a model obj for the db, for example

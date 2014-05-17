@@ -35,7 +35,7 @@ module MessageSpec
       it "should store a timestamp" do
         m1 = Message.new raw: @raw_data
         m1.timestamp.should_not be(nil)
-        m1.timestamp.should be_a_kind_of(Fixnum)
+        m1.timestamp.should be_a_kind_of(Float)
       end
       
       it "should store message text" do
@@ -81,7 +81,7 @@ module MessageSpec
         hsh[:text].should == @text
         hsh[:raw].should == @raw_data
         hsh[:ip].should == @ip
-        hsh[:timestamp].should be_a_kind_of(Fixnum)
+        hsh[:timestamp].should be_a_kind_of(Float)
       end
       
       it "should output quoted csv" do
@@ -90,6 +90,34 @@ module MessageSpec
         target = "\"#{ m1.timestamp }\", \"#{ @nick }\", \"#{ @ip }\", \"#{ @text }\", \"#{ @raw_data }\""
         out = m1.to_csv
         out.should == target
+      end
+      
+      describe "to_format" do
+      
+        it "should output a hash when told" do
+          m1 = Message.new raw: @raw_data, nick: @nick, text: @text
+          out = m1.to_format('hash')
+          out.should be_a_kind_of(Hash)
+        end
+        
+        it "should output a json when told" do
+          m1 = Message.new raw: @raw_data, nick: @nick, text: @text
+          out = m1.to_format('json')
+          outh = JSON.parse(out)
+          outh.should be_a_kind_of(Hash)
+        end
+        
+        it "should output text only when told" do
+          m1 = Message.new raw: @raw_data, nick: @nick, text: @text
+          out = m1.to_format('text-only')
+          out.should == @text
+        end
+        
+        it "should output text only when told" do
+          m1 = Message.new raw: @raw_data, nick: @nick, text: @text
+          out = m1.to_format('csv')
+          out.should == target = "\"#{ m1.timestamp }\", \"#{ @nick }\", \"#{ @ip }\", \"#{ @text }\", \"#{ @raw_data }\""
+        end
       end
     end
   end
