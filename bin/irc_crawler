@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'irc_crawler'
+include IrcCrawler
+
+options = {}
+
+# Global options parsed by option parser
+params = {}  # for parameters to pass on to run unit
+option_parser = OptionParser.new do |opts|
+  opts.on( '-h', '--help', 'Display this screen' ) do
+    puts opts
+    exit
+  end
+  
+  opts.on('-d DUR', '--duration', 'Duration to run in minutes') do |duration|
+    params[:duration] = duration.to_i
+  end
+  
+  opts.on('-l LIM', '--limit', 'Maximum number of posts to download. Optional') do |lim|
+    params[:limit] = lim.to_i
+  end
+  
+  opts.on('-s SERV', '--server', 'irc server to find channel on. Default = freenode') do |serv|
+    params[:server] = serv
+  end
+  
+  opts.on('-n NICK', '--nick', 'Nick to use. Default will be slightly random.') do |nick|
+    params[:nick] = nick
+  end
+  
+  opts.on('-p PORT', '--port', 'Server port for connections. Default = 6667') do |port|
+    params[:port] = port
+  end
+  
+  opts.on('-c [CHAN]', '--channels', "Array of irc channels to listen to. REQUIRED.") do |chan|
+    params[:channels] = chan
+  end
+  
+  opts.on('-f FMT', '--format', 'Output format. Valid values = csv|text-only|json|hash. Default: json') do |fmt|
+    params[:format] = fmt
+  end
+end
+
+option_parser.parse!
+
+# Param checking will be handled in the module.
+set_params(params)
