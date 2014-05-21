@@ -1,0 +1,28 @@
+5/20
+  Deep frustration. In order to stop the stream with anything other than 'exit' I'm probably going to have to hack the cinch gem. For now, it exits.
+
+5/19
+  The crawler does not update stop conditions such as time and record count. BUT it is updated within the write object.
+  Therefore I created a file called counter that will monitor stop conditions and throw the stop error when needed.
+  But it's late. Fill in the blanks tomorrow.
+
+5/17
+  Time to run the crawler.
+  Having trouble with it. It seems to crawl but never writes out the posts. 
+  BUG: Stop conditions (duration an counter) DO NOT WORK. WAIT! It threw "Stream Complete" as intended but did not stop. 
+  BUG: If there is a duration, then there should only be a limit if the user specifies, and vice versa!
+  
+  #Can I do multiple streams at once? Yes. If I do, I need to include the channel in the meta data.  Can I log them to different files?
+
+5/16
+  Added last of the command line options. I think.
+  Next: Actually gather the data as configured and record it.
+
+5/15/2014
+  Created the project. Purpose: To make a simple to use command line crawler for irc channels. NOTE: Crawler. 1-way communication only.
+  Parses Cinch gem output into several output formats.
+  
+  
+  
+Features
+  I had some in mind, What were they?

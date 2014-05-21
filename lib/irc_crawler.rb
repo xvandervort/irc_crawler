@@ -1,7 +1,7 @@
-require "irc_crawler/version"
-require 'irc_crawler/message'
-
 module IrcCrawler
+  require_relative "irc_crawler/version"
+  require_relative "irc_crawler/crawler"
+
   DEFAULTS = {
     duration: 5,
     limit: 1000,
@@ -18,10 +18,27 @@ module IrcCrawler
     @limit      = prm[:limit] || prm['limit'] || DEFAULTS[:limit]
     @server     = prm[:server] || prm['server'] || DEFAULTS[:server]
     @nick       = prm[:nick] || prm['nick'] || DEFAULTS[:nick]
-    @port       = prm[:port] || prm['port'] || DEFAULTS[:port]
+    #@port       = prm[:port] || prm['port'] || DEFAULTS[:port]
     channel_list   = prm[:channels] || prm['channels'] || config_fail("Channel list is mandatory")
     @channels   = channel_repair channel_list
     @format     = validate_format(prm)
+    @outfile    = prm[:output]
+    
+    @prms = {
+      duration: @duration,
+      limit: @limit,
+      server: @server,
+      nick: @nick,
+      channels: @channels,
+      format: @format,
+      outfile: @outfile
+    }
+  end
+  
+  # this is where we create and run the crawler
+  def run_crawler
+    cr = Crawler.new @prms
+    cr.crawl
   end
     
   private
@@ -29,7 +46,6 @@ module IrcCrawler
   def config_fail(str = 'an error has occurred')
     raise ArgumentError, str
   end
-
   
   # IN: An array of channel names
   # Out: The same array but with every member preeded by a #

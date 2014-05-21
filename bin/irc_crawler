@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
-require 'irc_crawler'
+require_relative '../lib/irc_crawler'
 include IrcCrawler
 
 options = {}
@@ -28,13 +28,16 @@ option_parser = OptionParser.new do |opts|
   opts.on('-n NICK', '--nick', 'Nick to use. Default will be slightly random.') do |nick|
     params[:nick] = nick
   end
-  
+
+=begin
+  NOT yet implemented. Probably not really needed
   opts.on('-p PORT', '--port', 'Server port for connections. Default = 6667') do |port|
     params[:port] = port
   end
-  
-  opts.on('-c [CHAN]', '--channels', "Array of irc channels to listen to. REQUIRED.") do |chan|
-    params[:channels] = chan
+=end
+  opts.on('-c CHAN', '--channels', "Array of irc channels to listen to. REQUIRED.") do |chan|
+    # split up array input
+    params[:channels] = chan.split(/,/).collect{|i| i.strip }
   end
   
   opts.on('-f FMT', '--format', 'Output format. Valid values = csv|text-only|json|hash. Default: json') do |fmt|
@@ -47,6 +50,13 @@ option_parser = OptionParser.new do |opts|
 end
 
 option_parser.parse!
+if params.keys.empty?  # That means no incoming params
+  puts "Usage irc_crawler <options>. Call irc_crawler --help for available options."
+  exit
+end
 
 # Param checking will be handled in the module.
 set_params(params)
+run_crawler
+
+

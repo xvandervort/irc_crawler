@@ -8,6 +8,7 @@ class Writer
   
   def write(obj)
     out_string = obj.to_format(@format)
+    
     if @file_handle.nil?
       puts out_string
       

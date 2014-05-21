@@ -51,7 +51,7 @@ class Message
   def to_csv
     "\"#{ @timestamp }\", \"#{ @nick }\", \"#{ @ip }\", \"#{ @text }\", \"#{ @raw }\""
   end
-  
+    
   private
   
   # attempts to pull nick out of the raw data
